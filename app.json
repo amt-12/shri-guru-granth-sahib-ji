@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "shri-guru-granth-sahib-ji",
+    "name": "Shri Guru Granth Sahib Ji",
     "slug": "shri-guru-granth-sahib-ji",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
