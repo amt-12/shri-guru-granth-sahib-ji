@@ -16,6 +16,7 @@ import { RootTabScreenProps } from "../types";
 import { LazyPagerView } from "react-native-pager-view";
 import { NavigationPanel } from "../components/NavigationPanel";
 import { useNavigationPanel } from "../hooks/useNavigationPanel";
+import AsyncStorageLib from "@react-native-async-storage/async-storage/jest/async-storage-mock";
 
 const AnimatedPagerView = Animated.createAnimatedComponent(LazyPagerView);
 
@@ -26,8 +27,15 @@ function keyExtractor(page: CreatePage) {
 
 function Ang({ page }: RootTabScreenProps<"TabOne">) {
   const { angId, setAngId } = useContext(UserContext);
+  const [angValue, setAngValue] = useState(angId);
+  // console.log({ page });
 
-  const ang = useAng({ angId });
+  const ang = useAng(
+    { angId },
+    {
+      enabled: angValue > 0 && angValue <= 1431,
+    }
+  );
   const [visible, setVisible] = useState(false);
   return (
     <View style={{ flex: 1 }}>
@@ -36,19 +44,16 @@ function Ang({ page }: RootTabScreenProps<"TabOne">) {
           <TextInput
             label="Ang ID"
             focusable
+            autoFocus
             keyboardType="number-pad"
-            value={`${angId}`}
+            value={`${angValue}`}
             onChangeText={(p) => {
-              if (+p < 1) {
-                setAngId(1);
-                return;
-              }
-              if (+p > 1430) return;
-              setAngId(+p);
+              setAngValue(p);
             }}
           />
           <Button
             onPress={() => {
+              setAngId(+angValue);
               setVisible(false);
             }}
           >
@@ -70,7 +75,7 @@ function Ang({ page }: RootTabScreenProps<"TabOne">) {
           if (e.nativeEvent.locationX < 50 && angId > 1) {
             setAngId((p) => p - 1);
           }
-          if (e.nativeEvent.locationX > width - 50 && angId < 1400) {
+          if (e.nativeEvent.locationX > width - 50 && angId < 1431) {
             setAngId((p) => p + 1);
           }
         }}
@@ -98,7 +103,7 @@ function renderItem(a) {
 export default function TabOneScreen() {
   return <Ang />;
   const { ref, ...navigationPanel } =
-    useNavigationPanel<LazyPagerView<unknown>>(10);
+    useNavigationPanel<LazyPagerView<unknown>>(1430);
 
   return (
     <View style={styles.pagerView}>
@@ -113,7 +118,7 @@ export default function TabOneScreen() {
         ref={ref}
         style={styles.pagerView}
         initialPage={0}
-        maxRenderWindow={20}
+        maxRenderWindow={12}
         buffer={5}
         overdrag={navigationPanel.overdragEnabled}
         scrollEnabled={navigationPanel.scrollEnabled}
