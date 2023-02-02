@@ -7,6 +7,7 @@ export const getAng = ({ angId }) => {
     if (ang) {
       console.log("using Cache for ang: " + angId);
 
+      
       return JSON.parse(ang);
     }
 
@@ -19,6 +20,7 @@ export const getAng = ({ angId }) => {
       pathParams: {
         angId,
       },
+      apiHostUrl:'http://192.168.0.101:13131'
     }).then((res) => {
       AsyncStorageLib.setItem("ang:" + angId, JSON.stringify(res));
       return res;

@@ -130,7 +130,7 @@ export const callApi = ({
         // localStorage.setItem("timer", 1800);
       })
       .catch(async (err) => {
-        console.log(err, "err");
+        console.log(err.message, "err");
         if (!err.response) {
           reject(err);
           return;

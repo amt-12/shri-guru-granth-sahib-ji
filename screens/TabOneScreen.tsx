@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, Animated } from "react-native";
 import {
   Button,
@@ -7,36 +7,34 @@ import {
   TextInput,
   TouchableRipple,
 } from "react-native-paper";
+import InfinitePager, {
+  InfinitePagerImperativeApi,
+} from "react-native-infinite-pager";
+import * as Animatable from "react-native-animatable";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import { UserContext } from "../contexts/UserState";
 import { useAng } from "../data/ang/query";
 import { RootTabScreenProps } from "../types";
-import { LazyPagerView } from "react-native-pager-view";
-import { NavigationPanel } from "../components/NavigationPanel";
-import { useNavigationPanel } from "../hooks/useNavigationPanel";
 import AsyncStorageLib from "@react-native-async-storage/async-storage/jest/async-storage-mock";
-
-const AnimatedPagerView = Animated.createAnimatedComponent(LazyPagerView);
+import { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
 function keyExtractor(page: CreatePage) {
   return `${page.key}`;
 }
 
-function Ang({ page }: RootTabScreenProps<"TabOne">) {
-  const { angId, setAngId } = useContext(UserContext);
-  const [angValue, setAngValue] = useState(angId);
-  // console.log({ page });
-
+function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
   const ang = useAng(
-    { angId },
+    { angId: page },
     {
-      enabled: angValue > 0 && angValue <= 1431,
+      enabled: page > 0 && page <= 1431,
     }
   );
   const [visible, setVisible] = useState(false);
+  const [angValue, setAngValue] = useState(page);
   return (
     <View style={{ flex: 1 }}>
       <Portal>
@@ -47,8 +45,15 @@ function Ang({ page }: RootTabScreenProps<"TabOne">) {
             autoFocus
             keyboardType="number-pad"
             value={`${angValue}`}
-            onChangeText={(p) => {
-              setAngValue(p);
+            onChangeText={(value) => {
+              const parsedQty = Number.parseInt(value);
+              if (Number.isNaN(parsedQty)) {
+                setAngValue(0); //setter for state
+              } else if (parsedQty > 1431 || parsedQty < 1) {
+                setAngValue(angValue);
+              } else {
+                setAngValue(parsedQty);
+              }
             }}
           />
           <Button
@@ -70,17 +75,7 @@ function Ang({ page }: RootTabScreenProps<"TabOne">) {
           Ang: {ang.data?.pageno}
         </Text>
       </Button>
-      <ScrollView
-        onTouchEnd={(e) => {
-          if (e.nativeEvent.locationX < 50 && angId > 1) {
-            setAngId((p) => p - 1);
-          }
-          if (e.nativeEvent.locationX > width - 50 && angId < 1431) {
-            setAngId((p) => p + 1);
-          }
-        }}
-        style={styles.container}
-      >
+      <ScrollView style={styles.container}>
         {ang.data?.page?.map((page) => (
           <View key={page.line.id}>
             <Text
@@ -97,47 +92,123 @@ function Ang({ page }: RootTabScreenProps<"TabOne">) {
     </View>
   );
 }
-function renderItem(a) {
-  return <Ang page={a} />;
-}
+const NUM_ITEMS = 50;
+
+const Page = ({ index, setAngId }: { index: number }) => {
+  return <Ang page={index} setAngId={setAngId} />;
+};
+
+const slide1 = () => {
+  return <Text>First page</Text>;
+};
+const slide2 = () => {
+  return <Text>Second page</Text>;
+};
+const slide3 = () => {
+  return <Text>Third page</Text>;
+};
+
+const slides = [slide1, slide2, slide3];
+const firstSlide = slides[0];
+const lastSlide = slides[slides.length - 1];
+
+const loopingSlides = [lastSlide, ...slides, firstSlide];
+
 export default function TabOneScreen() {
-  return <Ang />;
-  const { ref, ...navigationPanel } =
-    useNavigationPanel<LazyPagerView<unknown>>(1430);
+  const infinitePager = useRef<InfinitePagerImperativeApi>();
+
+  const [displayPage, setDisplayPage] = useState(false);
+  const [displayPortal, setDisplayPortal] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setDisplayPortal(false);
+    }, 4000);
+    setTimeout(async () => {
+      let lastang = await AsyncStorage.getItem("lastAng");
+      console.log({ lastang });
+
+      infinitePager.current?.setPage(+lastang, {
+        animated: false,
+      });
+      setDisplayPage(true);
+    }, 1000);
+    return () => {};
+  }, [infinitePager.current]);
 
   return (
-    <View style={styles.pagerView}>
-      <Button
-        onPress={() => {
-          navigationPanel.setPage(140);
+    <View style={styles.flex}>
+      <View
+        style={{
+          display: displayPage ? "flex" : "none",
+          flex: 1,
         }}
       >
-        change
-      </Button>
-      <AnimatedPagerView
-        ref={ref}
-        style={styles.pagerView}
-        initialPage={0}
-        maxRenderWindow={12}
-        buffer={5}
-        overdrag={navigationPanel.overdragEnabled}
-        scrollEnabled={navigationPanel.scrollEnabled}
-        onPageScroll={navigationPanel.onPageScroll}
-        onPageSelected={navigationPanel.onPageSelected}
-        onPageScrollStateChanged={navigationPanel.onPageScrollStateChanged}
-        pageMargin={20}
-        // Lib does not support dynamically orientation change
-        orientation="horizontal"
-        // Lib does not support dynamically transitionStyle change
-        transitionStyle="curl"
-        // showPageIndicator={navigationPanel.dotsEnabled}
-        renderItem={renderItem}
-        data={navigationPanel.pages}
-        keyExtractor={keyExtractor}
-        // offscreenPageLimit={2}
-        overScrollMode={"always"}
-      ></AnimatedPagerView>
-      <NavigationPanel {...navigationPanel} />
+        <InfinitePager
+          ref={infinitePager}
+          // PageComponent={Page}
+          renderPage={(props) => (
+            <Page
+              {...props}
+              setAngId={async (angId) => {
+                infinitePager.current?.setPage(+angId, {
+                  animated: false,
+                });
+              }}
+            />
+          )}
+          style={styles.flex}
+          pageWrapperStyle={styles.flex}
+          minIndex={1}
+          pageBuffer={1}
+          onPageChange={(page) => {
+            if (page != 0) {
+              AsyncStorage.setItem("lastAng", `${page}`);
+            }
+          }}
+        />
+      </View>
+      {displayPortal && (
+        <Portal>
+          <Animatable.View
+            duration={4000}
+            animation={{
+              0: {
+                opacity: 0,
+                backgroundColor: "rgba(0,0,0,1)",
+              },
+              0.1: {
+                opacity: 1,
+                backgroundColor: "rgba(0,0,0,1)",
+              },
+              0.9: {
+                opacity: 1,
+                backgroundColor: "rgba(0,0,0,1)",
+              },
+              1: {
+                opacity: 0,
+                backgroundColor: "rgba(0,0,0,1)",
+              },
+            }}
+            style={{
+              flex: 1,
+              alignContent: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 30,
+                fontWeight: "600",
+                textAlign: "center",
+                alignSelf: "center",
+              }}
+            >
+              ਵਾਹਿਗੁਰੂ ਜੀ ਦਾ ਖਾਲਸਾ{"\n"}
+              ਵਾਹਿਗੁਰੂ ਜੀ ਦੀ ਫਤਿਹ
+            </Text>
+          </Animatable.View>
+        </Portal>
+      )}
     </View>
   );
 }
@@ -163,4 +234,5 @@ const styles = StyleSheet.create({
     height: 1,
     width: "80%",
   },
+  flex: { flex: 1 },
 });

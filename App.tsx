@@ -16,6 +16,7 @@ import { Provider as PaperProvider } from "react-native-paper";
 
 const queryClient = new QueryClient();
 
+
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
