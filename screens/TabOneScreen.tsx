@@ -3,6 +3,7 @@ import { Dimensions, ScrollView, StyleSheet, Animated } from "react-native";
 import {
   Button,
   Dialog,
+  Modal,
   Portal,
   TextInput,
   TouchableRipple,
@@ -17,6 +18,7 @@ import { LazyPagerView } from "react-native-pager-view";
 import { NavigationPanel } from "../components/NavigationPanel";
 import { useNavigationPanel } from "../hooks/useNavigationPanel";
 import AsyncStorageLib from "@react-native-async-storage/async-storage/jest/async-storage-mock";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const AnimatedPagerView = Animated.createAnimatedComponent(LazyPagerView);
 
@@ -37,6 +39,7 @@ function Ang({ page }: RootTabScreenProps<"TabOne">) {
     }
   );
   const [visible, setVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   return (
     <View style={{ flex: 1 }}>
       <Portal>
@@ -83,17 +86,53 @@ function Ang({ page }: RootTabScreenProps<"TabOne">) {
       >
         {ang.data?.page?.map((page) => (
           <View key={page.line.id}>
-            <Text
-              style={{ fontSize: 30, fontWeight: "600", textAlign: "center" }}
+            <TouchableOpacity
+              key={page.line.id}
+              onLongPress={() => {
+                console.log(page.line.id);
+                setIsModalVisible(true);
+              }}
             >
-              {page.line.gurmukhi.unicode}
-            </Text>
-            <Text style={{ fontSize: 20 }}>
+              <Text
+                style={{ fontSize: 30, fontWeight: "600", textAlign: "center" }}
+              >
+                {page.line.gurmukhi.unicode}
+              </Text>
+            </TouchableOpacity>
+            <Text style={{ fontSize: 20, textAlign: "center" }}>
               {page.line.translation.punjabi.default.unicode}
             </Text>
           </View>
         ))}
       </ScrollView>
+      <Portal>
+        <Modal
+          visible={isModalVisible}
+          onDismiss={() => {
+            setIsModalVisible(false);
+          }}
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: "white",
+              flexDirection: "row",
+              justifyContent: "space-around",
+              alignItems: "center",
+              width: width,
+              height: height / 2,
+            }}
+          >
+            <ScrollView>
+              <DetailedDescription />
+            </ScrollView>
+          </View>
+        </Modal>
+      </Portal>
     </View>
   );
 }
@@ -164,3 +203,19 @@ const styles = StyleSheet.create({
     width: "80%",
   },
 });
+
+const DetailedDescription = () => {
+  return (
+    <View>
+      <Text>
+        <Text style={{ fontWeight: "bold" }}>Ang:</Text>
+        <Text>
+          <Text style={{ fontWeight: "bold" }}>Gurmukhi:</Text>
+          <Text>
+            <Text style={{ fontWeight: "bold" }}>Translation:</Text>
+          </Text>
+        </Text>
+      </Text>
+    </View>
+  );
+};
