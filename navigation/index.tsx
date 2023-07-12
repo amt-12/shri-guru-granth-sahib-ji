@@ -93,7 +93,7 @@ function BottomTabNavigator() {
         name="TabOne"
         component={TabOneScreen}
         options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
-          title: "Guru Granth",
+          title: "Guru Granth Sahib",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           // header:
         })}
