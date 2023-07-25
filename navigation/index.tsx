@@ -27,6 +27,7 @@ import {
   RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
+import { RouterDrawer } from "./Drawer";
 
 export default function Navigation({
   colorScheme,
@@ -53,6 +54,11 @@ function RootNavigator() {
   return (
     <UserState>
       <Stack.Navigator>
+        <Stack.Screen
+          name="Drawer"
+          component={RouterDrawer}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Root"
           component={BottomTabNavigator}
