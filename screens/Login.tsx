@@ -25,8 +25,8 @@ const Login = ({navigation})=> {
     password:password
    
   })
-  Alert.alert('Success', 'Login Successfully');
-    navigation.navigate('Bookmarkscreen')
+    Alert.alert('Success', 'Login Successfully');
+    navigation.navigate('BookmarkScreen')
   }
   return (
      <View style = {styles.container}>
