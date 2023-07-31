@@ -22,7 +22,7 @@ const Registration = ({navigation}:any) => {
 
     const handleregistration = async () => {
         try {
-          const res = await axios.post('http://192.168.0.103:3000/registration',
+          const res = await axios.post('http://192.168.0.48:3000/registration',
           {
             fullName: fullName,
             address:address,

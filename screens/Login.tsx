@@ -1,34 +1,68 @@
 import {Pressable, View, Text, TextInput, TouchableOpacity, StatusBar, StyleSheet, Dimensions, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useFonts } from 'expo-font';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Bookmark from './Bookmark';
 
 const {height, width} = Dimensions.get('window')
 
-const Login = ({navigation})=> {
+const Login = ({navigation}:any)=> {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [fontsLoaded] = useFonts({
     'Rubik-Regular': require('../assets/fonts/Rubik-Regular.ttf'),
     'Lora-Regular': require('../assets/fonts/Lora-Regular.ttf'),
     'Lobster-Regular': require('../assets/fonts/Lobster-Regular.ttf'),
   });
+  useEffect(() => {
+    checkLoggedInStatus();
+  }, []);
+  const checkLoggedInStatus = async () => {
+    try {
+      const token = await AsyncStorage.getItem('authToken');
+      if (token) {
+        setIsLoggedIn(true);
+      }
+    } catch (error) {
+      console.error('Error checking login status:', error);
+    }
+  };
+  
 
+  const handleLogin = async () =>{
+    if (!email || !password) {
+      Alert.alert('ਕੁਝ ਗਲਤ', 'ਕਿਰਪਾ ਕਰਕੇ ਈਮੇਲ ਅਤੇ ਪਾਸਵਰਡ ਦੋਵਾਂ ਖੇਤਰਾਂ ਨੂੰ ਭਰੋ।');
+      return;
+    }
+    try{
+      const res = await axios.post('http://192.168.0.48:3000/login',{
+      email:email,
+      password:password
+    
+    })
+      if (res.data.token) {
+        const authToken = res.data.token;
+        await AsyncStorage.setItem('authToken', authToken);
+
+        setIsLoggedIn(true); 
+        Alert.alert('Success', 'Login Successfully');
+        navigation.navigate('BookmarkScreen');
+      } else {
+        Alert.alert('Error', 'Invalid response from the server. Missing authentication token.');
+      }
+  } catch (error) {
+    Alert.alert('Error', 'Login failed. Please check your email and password.');
+  }
+};
   if (!fontsLoaded) {
     return null;
   }
-
-  const handleLogin = async () =>{
-    const res = await axios.post('http://192.168.0.103:3000/login',{
-    email:email,
-    password:password
-   
-  })
-    Alert.alert('Success', 'Login Successfully');
-    navigation.navigate('BookmarkScreen')
-  }
-  return (
+  return isLoggedIn ? (
+    <Bookmark />
+  ):(
      <View style = {styles.container}>
 
       <StatusBar backgroundColor= '#fff'  />
