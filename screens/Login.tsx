@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Bookmark from './Bookmark';
+import SERVER from '../config/connection';
 
 const {height, width} = Dimensions.get('window')
 
@@ -38,7 +39,7 @@ const Login = ({navigation}:any)=> {
       return;
     }
     try{
-      const res = await axios.post('http://192.168.0.48:3000/login',{
+      const res = await axios.post(SERVER+'/login',{
       email:email,
       password:password
     

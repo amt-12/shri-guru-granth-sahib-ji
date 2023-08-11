@@ -3,6 +3,7 @@ import { Text, View } from "../components/Themed";
 import { useFonts } from "expo-font";
 import axios from "axios";
 import { useState } from "react";
+import SERVER from "../config/connection";
 const {height, width} = Dimensions.get('window')
 
 const Registration = ({navigation}:any) => {
@@ -22,7 +23,7 @@ const Registration = ({navigation}:any) => {
 
     const handleregistration = async () => {
         try {
-          const res = await axios.post('http://192.168.0.48:3000/registration',
+          const res = await axios.post(SERVER+'/registration',
           {
             fullName: fullName,
             address:address,

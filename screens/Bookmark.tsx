@@ -2,12 +2,13 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { FlatList } from 'react-native-gesture-handler'
+import SERVER from '../config/connection'
 
 const Bookmark = () => {
     const [data, setData]:any = useState([]);
   const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.0.48:3000/bookmark');
+        const response = await axios.get(SERVER+'/bookmark');
         setData(response?.data?.data);
       } catch (error) {
         console.error( error);

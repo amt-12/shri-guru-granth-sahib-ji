@@ -1,5 +1,5 @@
 import { useContext, useRef, useState } from "react";
-import { Dimensions, ScrollView, StyleSheet, Animated } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, Animated, Pressable } from "react-native";
 import {
   Button,
   Dialog,
@@ -20,6 +20,7 @@ import { RootTabScreenProps } from "../types";
 import AsyncStorageLib from "@react-native-async-storage/async-storage/jest/async-storage-mock";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ModalScreen from "./ModalScreen";
 
 const { width, height } = Dimensions.get("window");
 function keyExtractor(page: CreatePage) {
@@ -78,11 +79,14 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
       <ScrollView style={styles.container}>
         {ang.data?.page?.map((page) => (
           <View key={page.line.id}>
+            <Pressable onPress={()=>{ModalScreen;
+            }}>
             <Text
               style={{ fontSize: 30, fontWeight: "600", textAlign: "center" }}
             >
               {page.line.gurmukhi.unicode}
             </Text>
+            </Pressable>
             <Text style={{ fontSize: 20 }}>
               {page.line.translation.punjabi.default.unicode}
             </Text>
