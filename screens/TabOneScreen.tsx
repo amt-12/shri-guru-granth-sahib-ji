@@ -20,8 +20,6 @@ import { RootTabScreenProps } from "../types";
 import AsyncStorageLib from "@react-native-async-storage/async-storage/jest/async-storage-mock";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import ModalScreen from "./ModalScreen";
-import ModalMenu from "./ModalScreen";
 
 const { width, height } = Dimensions.get("window");
 function keyExtractor(page: CreatePage) {
@@ -37,7 +35,7 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
   );
   const [visible, setVisible] = useState(false);
   const [angValue, setAngValue] = useState(page);
-  const [viewable, setViewable] = useState(false)
+
   return (
     <View style={{ flex: 1 }}>
       <Portal>
@@ -81,14 +79,14 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
       <ScrollView style={styles.container}>
         {ang.data?.page?.map((page) => (
           <View key={page.line.id}>
-            <Pressable onLongPress={()=>ModalScreen} >
+            <Pressable>
             <Text
               style={{ fontSize: 30, fontWeight: "600", textAlign: "center" }}
             >
               {page.line.gurmukhi.unicode}
             </Text>
             </Pressable>
-            <ModalMenu visible={viewable} setVisible={setViewable} />
+
             <Text style={{ fontSize: 20 }}>
               {page.line.translation.punjabi.default.unicode}
             </Text>
