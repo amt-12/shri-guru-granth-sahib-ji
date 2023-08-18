@@ -205,6 +205,7 @@ export default function TabOneScreen() {
                 fontWeight: "600",
                 textAlign: "center",
                 alignSelf: "center",
+                color:"white",
               }}
             >
               ਵਾਹਿਗੁਰੂ ਜੀ ਦਾ ਖਾਲਸਾ{"\n"}
