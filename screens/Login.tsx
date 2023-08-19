@@ -1,14 +1,17 @@
-import {Pressable, View, Text, TextInput, TouchableOpacity, StatusBar, StyleSheet, Dimensions, Alert } from 'react-native'
+import { View, Text, StatusBar, StyleSheet, Dimensions, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useFonts } from 'expo-font';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Bookmark from './Bookmark';
 import SERVER from '../config/connection';
+import LoginInput from '../components/LoginInput';
+import IsLoginBtn from '../components/IsLoginBtn';
+import PressReg from '../components/PressReg';
 
 const {height, width} = Dimensions.get('window')
 
-const Login = ({navigation}:any)=> {
+const Login = ({navigation }:any)=> {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -58,12 +61,14 @@ const Login = ({navigation}:any)=> {
     Alert.alert('Error', 'Login failed. Please check your email and password.');
   }
 };
+
   if (!fontsLoaded) {
     return null;
   }
   return isLoggedIn ? (
     <Bookmark />
-  ):(
+  )
+  :(
      <View style = {styles.container}>
 
       <StatusBar backgroundColor= '#fff'  />
@@ -72,22 +77,14 @@ const Login = ({navigation}:any)=> {
        ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਿਹ।।
       </Text >
  
-      <TextInput 
-        style ={styles.txt}  
-        placeholder = 'ਈ - ਮੇਲ'
-        onChangeText={setEmail}  />
-      <TextInput 
-          style ={styles.txt} 
-          placeholder='ਪਾਸਵਰਡ' 
-          secureTextEntry 
-          onChangeText={setPassword}
-        />
-      <TouchableOpacity style ={styles.btn} onPress={handleLogin} > 
-        <Text style ={styles.btntxt} >Sign In</Text>
-      </TouchableOpacity>
-      <Pressable onPress={()=> navigation.navigate('Registration Screen')}>
-      <Text style = {{fontSize:17, fontFamily:'Lora-Regular'}} > Not a member? <Text style = {{color:'blue', fontSize:17, fontFamily:'Lora-Regular'}}>Register now</Text></Text>
-      </Pressable> 
+      <LoginInput 
+      setEmail ={setEmail}
+      setPassword = {setPassword}
+      />
+      <IsLoginBtn 
+      handleLogin = {handleLogin}
+      />
+      <PressReg navigation ={navigation} />
       
   </View>
   )
@@ -99,28 +96,6 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent:'center',
     alignItems:'center',
-  },
-  txt:{
-    backgroundColor: '#fff',
-    width: width * 0.8,
-    height: 60,
-    borderRadius:15,
-    padding:20,
-    marginBottom:10,
-  },
-  btn: {
-    color:'#fff',
-    backgroundColor:'#E1372D',
-    width: width * 0.8,
-    padding:15,
-    margin: height /8,
-    borderRadius:15,
-  },
-  btntxt:{
-    color:'#fff',
-    fontSize:20,
-    textAlign:'center',
-    fontFamily:'Lora-Regular'
   },
   background:{
     position:'absolute',

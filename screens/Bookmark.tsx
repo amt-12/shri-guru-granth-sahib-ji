@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Button, SafeAreaView, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Import the hook
+import { View, Text, FlatList, Button, SafeAreaView, StyleSheet, Alert, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import SERVER from '../config/connection';
@@ -8,6 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 
 const Bookmark = () => {
   const [data, setData] = useState([]);
+
   const fetchData = async () => {
     try {
         const authToken = await AsyncStorage.getItem('authToken');
@@ -34,18 +34,19 @@ const Bookmark = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  const white = "rgb(200,200,200)"
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style = {styles.container}>
       <StatusBar hidden />
-      <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'wheat', textAlign: 'center', backgroundColor: 'black' }}>ਪਦ ਅਰਥ:</Text>
+      <TextInput placeholder='Search' placeholderTextColor={white} />
       <FlatList
         data={data}
         renderItem={({ item }) => {
           return (
             <View>
-              <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>{item.title}</Text>
-              <Text style={{ fontSize: 15 }}>{item.arth}</Text>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(200, 200, 200)' }}>{item.title}</Text>
+              <Text style={{ fontSize: 15, color: 'rgb(200, 200, 200)' }}>{item.arth}</Text>
             </View>
           );
         }}
@@ -56,4 +57,10 @@ const Bookmark = () => {
 
 export default Bookmark;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+    backgroundColor: 'rgb(0, 0, 0)'
+  },
+
+});

@@ -1,9 +1,12 @@
-import { TextInput, TouchableOpacity, StyleSheet,StatusBar, Dimensions, Pressable, Alert, Keyboard, TouchableWithoutFeedback} from "react-native";
+import { StyleSheet,StatusBar, Dimensions, Alert, Keyboard, TouchableWithoutFeedback} from "react-native";
 import { Text, View } from "../components/Themed";
 import { useFonts } from "expo-font";
 import axios from "axios";
 import { useState } from "react";
 import SERVER from "../config/connection";
+import RegInput from "../components/RegInput";
+import RegBtn from "../components/RegBtn";
+import PressBtn from "../components/PressBtn";
 const {height, width} = Dimensions.get('window')
 
 const Registration = ({navigation}:any) => {
@@ -45,42 +48,16 @@ const Registration = ({navigation}:any) => {
       ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ।।{"\n"}
       ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਿਹ।।
       </Text >
-    <>
-      <TextInput 
-        style ={styles.txt}
-        placeholder="ਪੂਰਾ ਨਾਂਮ" 
-        value={fullName}
-        onChangeText={setFullName}
-        />
-      <TextInput 
-        style ={styles.txt} 
-        placeholder="ਪੂਰਾ ਪਤਾ"
-        value={address}
-        onChangeText={setAddress}
-        />
-      <TextInput 
-        style ={styles.txt} 
-        placeholder=" ਈ - ਮੇਲ "
-        value={email}
-        onChangeText={setEmail}
-        
-        />
-      <TextInput 
-        style ={styles.txt} 
-        secureTextEntry 
-        placeholder="ਪਾਸਵਰਡ" 
-        value={password}
-        onChangeText={setPassword}
-        />
-      <TouchableOpacity style ={styles.btn}
-        onPress={handleregistration}
-      >
-        <Text style ={styles.btntxt}>Submit</Text>
-      </TouchableOpacity>
-        <Pressable onPress={()=> navigation.navigate('Login screen')}>
-        <Text style = {{fontSize:17, fontFamily:'Lora-Regular'}} > Not a member? <Text style = {{color:'blue', fontSize:17, fontFamily:'Lora-Regular'}}>Sign in</Text></Text>
-        </Pressable>
-    </>
+      <RegInput 
+      setFullName ={setFullName}
+      setAddress = {setAddress}
+      setEmail = {setEmail}
+      setPassword = {setPassword}
+      />
+     <RegBtn 
+     handleregistration ={handleregistration}
+     />
+      <PressBtn navigation = {navigation}/>
     </View>
     </TouchableWithoutFeedback>
   );
@@ -92,28 +69,6 @@ const styles = StyleSheet.create({
       justifyContent:'center',
       alignItems:'center',
       backgroundColor:'#eee'
-    },
-    txt:{
-      backgroundColor: '#fff',
-      width: width * 0.8,
-      height: 60,
-      borderRadius:15,
-      padding:20,
-      marginBottom:10,
-    },
-    btn: {
-      color:'#fff',
-      backgroundColor:'#E1372D',
-      width: width * 0.8,
-      padding:15,
-      margin: height /8,
-      borderRadius:15,
-    },
-    btntxt:{
-      color:'#fff',
-      fontSize:20,
-      textAlign:'center',
-      fontFamily:'Lora-Regular'
     },
     background:{
       position:'absolute',
