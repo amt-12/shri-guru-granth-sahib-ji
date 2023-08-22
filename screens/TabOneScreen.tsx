@@ -49,12 +49,6 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
   const [angValue, setAngValue] = useState(page);
   const doubleTapRef = useRef(null);
 
-  const onSingleTapEvent = (event: any) => {
-    if (event.nativeEvent.state === State.ACTIVE) {
-      console.log("single tap 1");
-    }
-  };
-
   const onDoubleTapEvent = (event: any) => {
     if (event.nativeEvent.state === State.ACTIVE) {
       console.log("double tap 1");
