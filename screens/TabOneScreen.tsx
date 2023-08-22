@@ -1,11 +1,10 @@
-import { useContext, useRef, useState } from "react";
-import { Dimensions, ScrollView, StyleSheet, Animated, Pressable } from "react-native";
+import { useRef, useState } from "react";
+import { Dimensions, ScrollView, StyleSheet,Pressable } from "react-native";
 import {
   Button,
   Dialog,
   Portal,
   TextInput,
-  TouchableRipple,
 } from "react-native-paper";
 import InfinitePager, {
   InfinitePagerImperativeApi,
@@ -14,7 +13,6 @@ import * as Animatable from "react-native-animatable";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
-import { UserContext } from "../contexts/UserState";
 import { useAng } from "../data/ang/query";
 import { RootTabScreenProps } from "../types";
 import AsyncStorageLib from "@react-native-async-storage/async-storage/jest/async-storage-mock";

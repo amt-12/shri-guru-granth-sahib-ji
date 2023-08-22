@@ -1,6 +1,5 @@
 import { View, Text, StatusBar, StyleSheet, Dimensions, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useFonts } from 'expo-font';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Bookmark from './Bookmark';
@@ -8,19 +7,15 @@ import SERVER from '../config/connection';
 import LoginInput from '../components/LoginInput';
 import IsLoginBtn from '../components/IsLoginBtn';
 import PressReg from '../components/PressReg';
+import { useLoginset } from '../hooks/useLoginset';
 
 const {height, width} = Dimensions.get('window')
 
 const Login = ({navigation }:any)=> {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+ const {isLoggedIn, setIsLoggedIn} = useLoginset();
 
-  const [fontsLoaded] = useFonts({
-    'Rubik-Regular': require('../assets/fonts/Rubik-Regular.ttf'),
-    'Lora-Regular': require('../assets/fonts/Lora-Regular.ttf'),
-    'Lobster-Regular': require('../assets/fonts/Lobster-Regular.ttf'),
-  });
   useEffect(() => {
     checkLoggedInStatus();
   }, []);
@@ -61,10 +56,6 @@ const Login = ({navigation }:any)=> {
     Alert.alert('Error', 'Login failed. Please check your email and password.');
   }
 };
-
-  if (!fontsLoaded) {
-    return null;
-  }
   return isLoggedIn ? (
     <Bookmark />
   )
