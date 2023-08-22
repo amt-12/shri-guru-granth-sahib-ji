@@ -1,23 +1,26 @@
 import { useRef, useState } from "react";
-import { Dimensions, ScrollView, StyleSheet,Pressable } from "react-native";
 import {
-  Button,
-  Dialog,
-  Portal,
-  TextInput,
-} from "react-native-paper";
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
+import { Button, Dialog, Portal, TextInput } from "react-native-paper";
 import InfinitePager, {
   InfinitePagerImperativeApi,
 } from "react-native-infinite-pager";
 import * as Animatable from "react-native-animatable";
+import { State, TapGestureHandler } from "react-native-gesture-handler";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import { useAng } from "../data/ang/query";
 import { RootTabScreenProps } from "../types";
-import AsyncStorageLib from "@react-native-async-storage/async-storage/jest/async-storage-mock";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { loginFlag } from "../store/auth";
+import { useAtom } from "jotai";
 
 const { width, height } = Dimensions.get("window");
 function keyExtractor(page: CreatePage) {
@@ -25,6 +28,17 @@ function keyExtractor(page: CreatePage) {
 }
 
 function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
+  const [, setIsLoggedIn] = useAtom(loginFlag);
+  useEffect(() => {
+    AsyncStorage.getItem("authToken").then((a) => {
+      if (a) {
+        setIsLoggedIn(true);
+      }
+    });
+
+    return () => {};
+  }, []);
+
   const ang = useAng(
     { angId: page },
     {
@@ -33,6 +47,19 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
   );
   const [visible, setVisible] = useState(false);
   const [angValue, setAngValue] = useState(page);
+  const doubleTapRef = useRef(null);
+
+  const onSingleTapEvent = (event: any) => {
+    if (event.nativeEvent.state === State.ACTIVE) {
+      console.log("single tap 1");
+    }
+  };
+
+  const onDoubleTapEvent = (event: any) => {
+    if (event.nativeEvent.state === State.ACTIVE) {
+      console.log("double tap 1");
+    }
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -77,14 +104,25 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
       <ScrollView style={styles.container}>
         {ang.data?.page?.map((page) => (
           <View key={page.line.id}>
-            <Pressable>
-            <Text
-              style={{ fontSize: 30, fontWeight: "600", textAlign: "center" }}
+            <TapGestureHandler
+              ref={doubleTapRef}
+              onHandlerStateChange={onDoubleTapEvent}
+              numberOfTaps={2}
             >
-              {page.line.gurmukhi.unicode}
-            </Text>
-            </Pressable>
-
+              <Pressable>
+                <TouchableOpacity>
+                  <Text
+                    style={{
+                      fontSize: 30,
+                      fontWeight: "600",
+                      textAlign: "center",
+                    }}
+                  >
+                    {page.line.gurmukhi.unicode}
+                  </Text>
+                </TouchableOpacity>
+              </Pressable>
+            </TapGestureHandler>
             <Text style={{ fontSize: 20 }}>
               {page.line.translation.punjabi.default.unicode}
             </Text>
@@ -203,7 +241,7 @@ export default function TabOneScreen() {
                 fontWeight: "600",
                 textAlign: "center",
                 alignSelf: "center",
-                color:"white",
+                color: "white",
               }}
             >
               ਵਾਹਿਗੁਰੂ ਜੀ ਦਾ ਖਾਲਸਾ{"\n"}
