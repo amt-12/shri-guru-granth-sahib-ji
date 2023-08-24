@@ -50,7 +50,7 @@ const ListItem = ({ item }: any) => {
           <FontAwesome5
             name={"trash-alt"}
             size={LIST_HEIGHT * 0.35}
-            color={"red"}
+            color={"white"}
           />
         </Pressable>
       </Animated.View>
@@ -86,6 +86,7 @@ export default ListComponent;
 const styles = StyleSheet.create({
   insidecontainer: {
     marginHorizontal: 20,
+    width: "96%",
     padding: 10,
     flex: 1,
     flexDirection: "row",
@@ -96,6 +97,7 @@ const styles = StyleSheet.create({
   iconcontainer: {
     height: LIST_HEIGHT,
     width: 60,
+    backgroundColor: "red",
     justifyContent: "center",
     position: "absolute",
     right: 0.1,
