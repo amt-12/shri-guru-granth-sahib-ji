@@ -9,6 +9,7 @@ import {
   Alert,
   TextInput,
   Dimensions,
+  Pressable,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -32,7 +33,7 @@ const Bookmark = () => {
         });
 
         setData(response?.data?.data);
-        console.log(response?.data);
+        console.log(response?.data?.data);
       } else {
         // Handle case where authToken is not available
         console.log("Auth token not available");
@@ -64,24 +65,36 @@ const Bookmark = () => {
         data={data}
         renderItem={({ item }) => {
           return (
-            <View style={{ marginHorizontal: 20, padding: 10 }}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  color: "rgb(255,255,255)",
-                  fontFamily: "GurbaniAkharHeavy",
-                }}
+            <View
+              style={{
+                marginHorizontal: 20,
+                padding: 10,
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Pressable
+                onPress={() => Alert.alert("Are you Sure?, You want to delete")}
               >
-                {item.title}
-              </Text>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    color: "rgb(255,255,255)",
+                    fontFamily: "GurbaniAkharHeavy",
+                  }}
+                >
+                  {item.title}
+                </Text>
+              </Pressable>
               <Text
                 style={{
+                  fontSize: 12,
                   fontWeight: "600",
                   color: "rgb(200, 200, 200)",
-                  fontFamily: "GurbaniAkhar",
                 }}
               >
-                {item.arth}
+                ANG: {item.ang}
               </Text>
             </View>
           );
