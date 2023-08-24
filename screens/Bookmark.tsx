@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
   FlatList,
-  Button,
   SafeAreaView,
   StyleSheet,
   Alert,
@@ -15,11 +14,16 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import SERVER from "../config/connection";
 import { StatusBar } from "expo-status-bar";
-import { FontAwesome } from "@expo/vector-icons";
+import ListComponent from "../components/ListComponent";
 const { height, width } = Dimensions.get("window");
 
+interface ListTask {
+  title: String;
+  arth: String;
+  ang: Number;
+}
 const Bookmark = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<ListTask>();
 
   const fetchData = async () => {
     try {
@@ -61,45 +65,7 @@ const Bookmark = () => {
         blurOnSubmit={false}
       />
 
-      <FlatList
-        data={data}
-        renderItem={({ item }) => {
-          return (
-            <View
-              style={{
-                marginHorizontal: 20,
-                padding: 10,
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Pressable
-                onPress={() => Alert.alert("Are you Sure?, You want to delete")}
-              >
-                <Text
-                  style={{
-                    fontSize: 20,
-                    color: "rgb(255,255,255)",
-                    fontFamily: "GurbaniAkharHeavy",
-                  }}
-                >
-                  {item.title}
-                </Text>
-              </Pressable>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: "600",
-                  color: "rgb(200, 200, 200)",
-                }}
-              >
-                ANG: {item.ang}
-              </Text>
-            </View>
-          );
-        }}
-      />
+      <ListComponent data={data} />
     </SafeAreaView>
   );
 };
