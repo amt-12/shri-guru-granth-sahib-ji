@@ -1,4 +1,9 @@
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  DrawerContentScrollView,
+  DrawerItem,
+  DrawerItemList,
+  createDrawerNavigator,
+} from "@react-navigation/drawer";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import Login from "../screens/Login";
@@ -6,12 +11,6 @@ import Registration from "../screens/Registration";
 import TabOneScreen from "../screens/TabOneScreen";
 import LoginButton from "../components/LoginBtn";
 import Bookmark from "../screens/Bookmark";
-import { useLoginset } from "../hooks/useLoginset";
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-} from "@react-navigation/drawer";
 import { loginFlag } from "../store/auth";
 import { useAtom } from "jotai";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -20,22 +19,7 @@ import Profile from "../screens/Profile";
 
 function CustomDrawerContent(props) {
   const [isLoggedIn, setisLoggedIn] = useAtom(loginFlag);
-  console.log(isLoggedIn);
 
-  const { state, ...rest } = props;
-  const newState = { ...state }; //copy from state before applying any filter. do not change original state
-  newState.routes = newState.routes.filter((item) => {
-    switch (item.name) {
-      case "Login screen":
-      case "Registration Screen":
-        return !isLoggedIn;
-      case "BookmarkScreen":
-      case "ProfileScreen":
-        return isLoggedIn;
-      default:
-        return true;
-    }
-  }); //replace "Login' with your route name
   const navigation = useNavigation();
   const handleLogout = async () => {
     try {
@@ -48,7 +32,7 @@ function CustomDrawerContent(props) {
   };
   return (
     <DrawerContentScrollView {...props}>
-      <DrawerItemList state={newState} {...rest} />
+      <DrawerItemList {...props} />
       <DrawerItem
         label="Log out"
         onPress={() => {
@@ -81,52 +65,74 @@ export function RouterDrawer() {
           ),
         })}
       />
-      <Drawer.Screen
-        name="BookmarkScreen"
-        component={Bookmark}
-        options={{
-          title: "Bookmark",
-          headerShown: true,
+      {isLoggedIn && (
+        <>
+          <Drawer.Screen
+            name="BookmarkScreen"
+            component={Bookmark}
+            options={{
+              title: "Bookmark",
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: "rgb(1,1,1)",
+              },
+              headerTintColor: "rgb(255,255,255)",
+              headerTitleAlign: "center",
+              drawerIcon: ({ color, size }) => (
+                <Foundation
+                  name="book-bookmark"
+                  style={{ color: "rgb(50,150,230)" }}
+                  color={color}
+                  size={size}
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="ProfileScreen"
+            component={Profile}
+            options={{
+              title: "Profile",
+              headerShown: true,
+              drawerIcon: ({ color, size }) => (
+                <MaterialIcons
+                  name="person"
+                  style={{ color: "rgb(250,220,130)" }}
+                  color={color}
+                  size={size}
+                />
+              ),
+            }}
+          />
+        </>
+      )}
+      {!isLoggedIn && (
+        <>
+          <Drawer.Screen
+            name="Loginscreen"
+            component={Login}
+            options={{
+              title: "Login",
+              headerShown: true,
 
-          drawerIcon: ({ color, size }) => (
-            <Foundation name="book-bookmark" color={color} size={size} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Login screen"
-        component={Login}
-        options={{
-          title: "Login",
-          headerShown: false,
-
-          drawerIcon: ({ color, size }) => (
-            <MaterialIcons name="lock" color={color} size={size} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Registration Screen"
-        component={Registration}
-        options={{
-          title: "Registration",
-          headerShown: false,
-          drawerIcon: ({ color, size }) => (
-            <MaterialIcons name="person" color={color} size={size} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="ProfileScreen"
-        component={Profile}
-        options={{
-          title: "Profile",
-          headerShown: false,
-          drawerIcon: ({ color, size }) => (
-            <MaterialIcons name="person" color={color} size={size} />
-          ),
-        }}
-      />
+              drawerIcon: ({ color, size }) => (
+                <MaterialIcons name="lock" color={color} size={size} />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="RegistrationScreen"
+            component={Registration}
+            options={{
+              title: "Registration",
+              headerShown: true,
+              drawerIcon: ({ color, size }) => (
+                <MaterialIcons name="person" color={color} size={size} />
+              ),
+            }}
+          />
+        </>
+      )}
     </Drawer.Navigator>
   );
 }
