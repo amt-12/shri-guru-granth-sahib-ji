@@ -20,7 +20,7 @@ const Bookmark = () => {
       const authToken = await AsyncStorage.getItem("authToken");
 
       if (authToken) {
-        const response = await axios.get(`${SERVER}/bookmark`, {
+        const response = await axios.get(`${SERVER}bookmark`, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
