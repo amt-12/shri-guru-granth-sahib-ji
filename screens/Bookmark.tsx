@@ -36,8 +36,8 @@ const Bookmark = () => {
           },
         });
 
-        setData(response?.data?.data);
-        console.log(response?.data?.data);
+        setData(response?.data?.data?.[1].arth);
+        console.log(response?.data?.data?.[1]._id);
       } else {
         // Handle case where authToken is not available
         console.log("Auth token not available");

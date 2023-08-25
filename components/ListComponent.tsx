@@ -11,16 +11,35 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import { FontAwesome5 } from "@expo/vector-icons";
+import axios from "axios";
+import SERVER from "../config/connection";
 
 const LIST_HEIGHT = 60;
 const TRANSLATE_X_THRESHOLD = 20;
 const ListComponent = ({ data }: any) => {
+  const handleDelete = async () => {
+    try {
+      const res = await axios.delete(`${SERVER} +/Bookmark/${data._id}`);
+      console.log("Delete Response:", res.data?.data?.[0]);
+    } catch (err) {
+      if (err.response) {
+        console.log("Server Error:", err.response.status, err.response.data);
+      } else {
+        console.log("Network Error:", err.message);
+      }
+    }
+  };
   return (
-    <FlatList data={data} renderItem={({ item }) => <ListItem item={item} />} />
+    <FlatList
+      data={data}
+      renderItem={({ item }) => (
+        <ListItem item={item} onDelete={handleDelete} />
+      )}
+    />
   );
 };
 
-const ListItem = ({ item }: any) => {
+const ListItem = ({ item, onDelete }: any) => {
   const translateX = useSharedValue(0);
 
   const panGesture = useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
@@ -42,11 +61,10 @@ const ListItem = ({ item }: any) => {
   const rStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
   }));
-
   return (
     <View>
       <Animated.View style={styles.iconcontainer}>
-        <Pressable onPress={() => console.log("hihiih")}>
+        <Pressable onPress={() => onDelete(item)}>
           <FontAwesome5
             name={"trash-alt"}
             size={LIST_HEIGHT * 0.35}
