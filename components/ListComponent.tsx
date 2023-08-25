@@ -20,22 +20,10 @@ const TRANSLATE_X_THRESHOLD = 20;
 const ListComponent = ({ data }: any) => {
   const handleDelete = async () => {
     try {
-      const authToken = await AsyncStorage.getItem("authToken");
-
-      if (authToken) {
-        const response = await axios.delete(
-          `${SERVER}/bookmark/64e7f7b7f531770b45be7d7d`,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
-        console.log(response?.data?.data);
-      } else {
-        // Handle case where authToken is not available
-        console.log("Auth token not available");
-      }
+      const response = await axios.delete(
+        `${SERVER}/bookmark/64e7eea0541760931d698f5c`
+      );
+      console.log(response?.data?.data);
       console.log("Delete Response:", res.data?.data?.[0]);
     } catch (err) {
       if (err.response) {
