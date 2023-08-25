@@ -20,11 +20,9 @@ const TRANSLATE_X_THRESHOLD = 20;
 const ListComponent = ({ data }: any) => {
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(
-        `${SERVER}/bookmark/64e7eea0541760931d698f5c`
-      );
-      console.log(response?.data?.data);
-      console.log("Delete Response:", res.data?.data?.[0]);
+      const id = data.data.id;
+      const response = await axios.delete(`${SERVER}/bookmark/${id}`);
+      console.log(response?.data?.data?.[0]);
     } catch (err) {
       if (err.response) {
         console.log("Server Error:", err.response.status, err.response.data);

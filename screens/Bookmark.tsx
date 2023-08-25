@@ -7,6 +7,7 @@ import { StatusBar } from "expo-status-bar";
 import ListComponent from "../components/ListComponent";
 const { height, width } = Dimensions.get("window");
 
+const white = "rgb(200,200,200)";
 interface ListTask {
   title: String;
   arth: String;
@@ -40,7 +41,6 @@ const Bookmark = () => {
   useEffect(() => {
     fetchData();
   }, []);
-  const white = "rgb(200,200,200)";
 
   return (
     <SafeAreaView style={styles.container}>
@@ -75,6 +75,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 10,
     borderColor: "rgba(145, 151, 167, 1)",
-    color: "white",
+    color: white,
   },
 });

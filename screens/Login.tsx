@@ -47,7 +47,7 @@ const Login = ({ navigation }: any) => {
       return;
     }
     try {
-      const res = await axios.post(SERVER + "/login", {
+      const res = await axios.post(`${SERVER}login`, {
         email: email,
         password: password,
       });
