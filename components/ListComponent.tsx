@@ -13,13 +13,29 @@ import Animated, {
 import { FontAwesome5 } from "@expo/vector-icons";
 import axios from "axios";
 import SERVER from "../config/connection";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LIST_HEIGHT = 60;
 const TRANSLATE_X_THRESHOLD = 20;
 const ListComponent = ({ data }: any) => {
   const handleDelete = async () => {
     try {
-      const res = await axios.delete(`${SERVER} +/Bookmark/${data._id}`);
+      const authToken = await AsyncStorage.getItem("authToken");
+
+      if (authToken) {
+        const response = await axios.delete(
+          `${SERVER}/bookmark/64e7f7b7f531770b45be7d7d`,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+        console.log(response?.data?.data);
+      } else {
+        // Handle case where authToken is not available
+        console.log("Auth token not available");
+      }
       console.log("Delete Response:", res.data?.data?.[0]);
     } catch (err) {
       if (err.response) {
@@ -27,7 +43,7 @@ const ListComponent = ({ data }: any) => {
       } else {
         console.log("Network Error:", err.message);
       }
-    }
+    } //64e7f7b7f531770b45be7d7d
   };
   return (
     <FlatList

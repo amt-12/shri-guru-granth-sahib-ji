@@ -1,15 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  SafeAreaView,
-  StyleSheet,
-  Alert,
-  TextInput,
-  Dimensions,
-  Pressable,
-} from "react-native";
+import { SafeAreaView, StyleSheet, TextInput, Dimensions } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import SERVER from "../config/connection";
@@ -30,14 +20,14 @@ const Bookmark = () => {
       const authToken = await AsyncStorage.getItem("authToken");
 
       if (authToken) {
-        const response = await axios.get(SERVER + "/bookmark", {
+        const response = await axios.get(`${SERVER}/bookmark`, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
         });
 
-        setData(response?.data?.data?.[1].arth);
-        console.log(response?.data?.data?.[1]._id);
+        setData(response?.data?.data);
+        console.log(response?.data?.data);
       } else {
         // Handle case where authToken is not available
         console.log("Auth token not available");
