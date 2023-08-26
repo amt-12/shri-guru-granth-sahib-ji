@@ -1,5 +1,13 @@
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import {
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  Modal,
+  Alert,
+} from "react-native";
+import React, { useState } from "react";
 import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
@@ -17,26 +25,27 @@ import SERVER from "../config/connection";
 const LIST_HEIGHT = 60;
 const TRANSLATE_X_THRESHOLD = 20;
 const ListComponent = ({ data }: any) => {
+
   const handleDelete = async () => {
     try {
-      const id = data.data.id;
-      const response = await axios.delete(`${SERVER}/bookmark/${id}`);
-      console.log(response?.data?.data?.[0]);
+      const res = await axios.delete(`${SERVER}/bookmark/${id}`);
     } catch (err) {
       if (err.response) {
         console.log("Server Error:", err.response.status, err.response.data);
       } else {
         console.log("Network Error:", err.message);
       }
-    } //64e7f7b7f531770b45be7d7d
+    }
   };
   return (
-    <FlatList
-      data={data}
-      renderItem={({ item }) => (
-        <ListItem item={item} onDelete={handleDelete} />
-      )}
-    />
+   
+      <FlatList
+        data={data}
+        renderItem={({ item }) => (
+          <ListItem item={item} onDelete={handleDelete} />
+        )}
+      />
+    </Modal>
   );
 };
 
@@ -95,6 +104,7 @@ const ListItem = ({ item, onDelete }: any) => {
             ANG: {item.ang}
           </Text>
         </Animated.View>
+      
       </PanGestureHandler>
     </View>
   );
