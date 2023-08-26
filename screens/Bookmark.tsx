@@ -12,7 +12,7 @@ import axios from "axios";
 import SERVER from "../config/connection";
 import { StatusBar } from "expo-status-bar";
 import ListComponent from "../components/ListComponent";
-const { height, width } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const white = "rgb(200,200,200)";
 interface ListTask {

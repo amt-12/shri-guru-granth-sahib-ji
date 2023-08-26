@@ -25,7 +25,6 @@ import SERVER from "../config/connection";
 const LIST_HEIGHT = 60;
 const TRANSLATE_X_THRESHOLD = 20;
 const ListComponent = ({ data }: any) => {
-
   const handleDelete = async () => {
     try {
       const res = await axios.delete(`${SERVER}/bookmark/${id}`);
@@ -38,14 +37,12 @@ const ListComponent = ({ data }: any) => {
     }
   };
   return (
-   
-      <FlatList
-        data={data}
-        renderItem={({ item }) => (
-          <ListItem item={item} onDelete={handleDelete} />
-        )}
-      />
-    </Modal>
+    <FlatList
+      data={data}
+      renderItem={({ item }) => (
+        <ListItem item={item} onDelete={handleDelete} />
+      )}
+    />
   );
 };
 
@@ -104,7 +101,6 @@ const ListItem = ({ item, onDelete }: any) => {
             ANG: {item.ang}
           </Text>
         </Animated.View>
-      
       </PanGestureHandler>
     </View>
   );

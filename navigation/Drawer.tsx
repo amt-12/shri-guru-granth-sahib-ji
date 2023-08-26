@@ -16,6 +16,7 @@ import { useAtom } from "jotai";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import Profile from "../screens/Profile";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 function CustomDrawerContent(props) {
   const [isLoggedIn, setisLoggedIn] = useAtom(loginFlag);
@@ -39,6 +40,9 @@ function CustomDrawerContent(props) {
           // logout logic
           handleLogout();
         }}
+        icon={({ color, size }) => (
+          <MaterialCommunityIcons name="logout" color="green" size={size} />
+        )}
       />
     </DrawerContentScrollView>
   );
@@ -116,7 +120,11 @@ export function RouterDrawer() {
               headerShown: true,
 
               drawerIcon: ({ color, size }) => (
-                <MaterialIcons name="lock" color={color} size={size} />
+                <MaterialIcons
+                  name="lock"
+                  color="rgb(100,150,169)"
+                  size={size}
+                />
               ),
             }}
           />
@@ -127,7 +135,11 @@ export function RouterDrawer() {
               title: "Registration",
               headerShown: true,
               drawerIcon: ({ color, size }) => (
-                <MaterialIcons name="person" color={color} size={size} />
+                <MaterialIcons
+                  name="person"
+                  color="rgb(150, 90, 160)"
+                  size={size}
+                />
               ),
             }}
           />
