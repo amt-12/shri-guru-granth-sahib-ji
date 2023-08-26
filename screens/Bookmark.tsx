@@ -1,5 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { SafeAreaView, StyleSheet, TextInput, Dimensions } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  TextInput,
+  Dimensions,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import SERVER from "../config/connection";
@@ -43,20 +50,22 @@ const Bookmark = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar hidden />
-      <TextInput
-        style={styles.input}
-        placeholder="search keyword"
-        placeholderTextColor="#fff"
-        autoCapitalize="none"
-        keyboardType="default"
-        returnKeyType="next"
-        blurOnSubmit={false}
-      />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <SafeAreaView style={styles.container}>
+        <StatusBar hidden />
+        <TextInput
+          style={styles.input}
+          placeholder="search keyword"
+          placeholderTextColor="#fff"
+          autoCapitalize="none"
+          keyboardType="default"
+          returnKeyType="next"
+          blurOnSubmit={false}
+        />
 
-      <ListComponent data={data} />
-    </SafeAreaView>
+        <ListComponent data={data} />
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 

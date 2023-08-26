@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   insidecontainer: {
     marginHorizontal: 20,
     width: "96%",
-    padding: 10,
+    padding: 12,
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",

@@ -1,7 +1,6 @@
-import { TextInput, StyleSheet, Dimensions} from "react-native";
-const {height, width} = Dimensions.get('window')
-const RegInput = ({setFullName, setAddress, setEmail, setPassword}:any) => {
-
+import { TextInput, StyleSheet, Dimensions } from "react-native";
+const { height, width } = Dimensions.get("window");
+const RegInput = ({ setFullName, setAddress, setEmail, setPassword }: any) => {
   return (
     <>
       <TextInput
@@ -31,12 +30,13 @@ const RegInput = ({setFullName, setAddress, setEmail, setPassword}:any) => {
 };
 export default RegInput;
 const styles = StyleSheet.create({
-    txt:{
-        backgroundColor: '#fff',
-        width: width * 0.8,
-        height: 60,
-        borderRadius:15,
-        padding:20,
-        marginBottom:10,
-      },
-}) 
+  txt: {
+    backgroundColor: "#fff",
+    width: width * 0.8,
+    height: 50,
+    borderRadius: 15,
+    padding: 10,
+    marginTop: 20,
+    top: 50,
+  },
+});

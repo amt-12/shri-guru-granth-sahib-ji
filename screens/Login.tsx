@@ -5,6 +5,10 @@ import {
   StyleSheet,
   Dimensions,
   Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -74,24 +78,31 @@ const Login = ({ navigation }: any) => {
   return isLoggedIn ? (
     <Bookmark />
   ) : (
-    <View style={styles.container}>
-      <StatusBar backgroundColor="#fff" />
-      <Text
-        style={{
-          fontSize: 30,
-          textAlign: "center",
-          bottom: height * 0.02,
-          fontFamily: "Rubik-Regular",
-        }}
-      >
-        ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ।।{"\n"}
-        ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਿਹ।।
-      </Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View>
+          <StatusBar backgroundColor="#fff" />
+          <Text
+            style={{
+              fontSize: 26,
+              textAlign: "center",
+              bottom: height * 0.02,
+              fontFamily: "Rubik-Regular",
+            }}
+          >
+            ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ।।{"\n"}
+            ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਿਹ।।
+          </Text>
 
-      <LoginInput setEmail={setEmail} setPassword={setPassword} />
-      <IsLoginBtn handleLogin={handleLogin} />
-      <PressReg navigation={navigation} />
-    </View>
+          <LoginInput setEmail={setEmail} setPassword={setPassword} />
+          <IsLoginBtn handleLogin={handleLogin} />
+          <PressReg navigation={navigation} />
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 export default Login;
@@ -101,12 +112,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  background: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    top: 0,
   },
 });
