@@ -7,18 +7,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const Profile = () => {
   const [data, setData] = useState([]);
 
-  const fetchData = async (id) => {
+  const fetchData = async () => {
     try {
       const authToken = await AsyncStorage.getItem("authToken");
       if (authToken) {
-        const response = await axios.get(`${SERVER}singleuser/${id}`, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        });
-
-        setData(response?.data?.data?.id);
-        console.log(response?.data);
+        const response = await axios
+          .get(`${SERVER}singleuser/${data._id}`, {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          })
+          .then((res) => {
+            setData(res?.data?.data);
+          });
       } else {
         // Handle case where authToken is not available
         console.log("Auth token not available");
