@@ -1,44 +1,39 @@
-import { StyleSheet, Text, TouchableOpacity, View, Modal, Dimensions} from "react-native";
-import React, { useState } from "react";
+import { StatusBar } from "expo-status-bar";
+import { Platform, StyleSheet } from "react-native";
 
-const {width, height} = Dimensions.get('window'); 
+import EditScreenInfo from "../components/EditScreenInfo";
+import { Text, View } from "../components/Themed";
 
-const ModalMenu = ({visible, setVisible}:any) => {
-
+export default function ModalScreen() {
   return (
-    
-    <Modal visible={visible} transparent={false} onRequestClose={()=>{setVisible(true) }} >
-      <TouchableOpacity style = {{
-        backgroundColor: 'rgba(0, 0, 255, 0)',
-        width: width,
-        height:height,
-        position:'absolute',
-        top: 10,
-        justifyContent:'center',
-        alignItems:'center'
-      }} onPress={()=>{setVisible(false)}}>
-        <View 
-        style = {{
-          backgroundColor:'#f7f7f7',
-          width: width * 0.7,
-          height: 45,
-          borderRadius:30,
-          flexDirection:'row',
-          justifyContent:'space-evenly'
-          }}
-        >
-     
-            <Text style = {{fontSize:30}}>🙂 </Text>
-            <Text style = {{fontSize:30}}>💆‍♂️</Text>
-            <Text style = {{fontSize:30}}>👍</Text>
-            <Text style = {{fontSize:30}}>💪</Text>
-            <Text style = {{fontSize:30}}>🤘</Text>
-        </View>
-      </TouchableOpacity>
-      </Modal>
+    <View style={styles.container}>
+      <Text style={styles.title}>Modal</Text>
+      <View
+        style={styles.separator}
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
+      />
+      <EditScreenInfo path="/screens/ModalScreen.tsx" />
+
+      {/* Use a light status bar on iOS to account for the black space above the modal */}
+      <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
+    </View>
   );
-};
+}
 
-export default ModalMenu;
-
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  separator: {
+    marginVertical: 30,
+    height: 1,
+    width: "80%",
+  },
+});
