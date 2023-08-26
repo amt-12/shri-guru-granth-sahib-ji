@@ -13,7 +13,6 @@ import Animated, {
 import { FontAwesome5 } from "@expo/vector-icons";
 import axios from "axios";
 import SERVER from "../config/connection";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LIST_HEIGHT = 60;
 const TRANSLATE_X_THRESHOLD = 20;
