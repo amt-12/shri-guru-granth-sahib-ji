@@ -14,24 +14,19 @@ import SERVER from "../config/connection";
 import RegInput from "../components/RegInput";
 import RegBtn from "../components/RegBtn";
 import PressBtn from "../components/PressBtn";
-const { height, width } = Dimensions.get("window");
+import { useMutation } from "react-query";
 
 const Registration = ({ navigation }: any) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [address, setAddress] = useState("");
-  const [fontsLoaded] = useFonts({
-    "Rubik-Regular": require("../assets/fonts/Rubik-Regular.ttf"),
-    "Lora-Regular": require("../assets/fonts/Lora-Regular.ttf"),
-    "Lobster-Regular": require("../assets/fonts/Lobster-Regular.ttf"),
-  });
 
-  if (!fontsLoaded) {
-    return null;
-  }
-
-  const handleregistration = async () => {
+  const registrationUser = async () => {
+    if (!fullName || !address || !email || !password) {
+      Alert.alert("ਕੁਝ ਗਲਤ", "ਕਿਰਪਾ ਕਰਕੇ ਖੇਤਰਾਂ ਨੂੰ ਭਰੋ।");
+      return;
+    }
     try {
       const res = await axios.post(SERVER + "/registration", {
         fullName: fullName,
@@ -44,6 +39,10 @@ const Registration = ({ navigation }: any) => {
     } catch (err) {
       Alert.alert("Error", "Failed to save data. Please try again.");
     }
+  };
+  const { mutate, isLoading, isError, error } = useMutation(registrationUser);
+  const handleregistration = () => {
+    mutate({ fullName, address, email, password });
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -66,7 +65,7 @@ const Registration = ({ navigation }: any) => {
           setEmail={setEmail}
           setPassword={setPassword}
         />
-        <RegBtn handleregistration={handleregistration} />
+        <RegBtn handleregistration={handleregistration} isLoading={isLoading} />
         <PressBtn navigation={navigation} />
       </View>
     </TouchableWithoutFeedback>

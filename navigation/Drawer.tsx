@@ -65,7 +65,7 @@ export function RouterDrawer() {
           headerShown: true,
 
           drawerIcon: ({ color, size }) => (
-            <MaterialIcons name="home" color={color} size={size} />
+            <MaterialIcons name="home" color="orange" size={size} />
           ),
         })}
       />

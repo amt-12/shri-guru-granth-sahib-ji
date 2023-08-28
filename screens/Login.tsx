@@ -19,13 +19,14 @@ import LoginInput from "../components/LoginInput";
 import IsLoginBtn from "../components/IsLoginBtn";
 import PressReg from "../components/PressReg";
 import { loginFlag } from "../store/auth";
+import { useQueryClient, useMutation } from "react-query";
 
 const { height, width } = Dimensions.get("window");
 import { useAtom } from "jotai";
 
 const Login = ({ navigation }: any) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<any>("");
+  const [password, setPassword] = useState<any>("");
   const [isLoggedIn, setIsLoggedIn] = useAtom(loginFlag);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const Login = ({ navigation }: any) => {
     }
   };
 
-  const handleLogin = async () => {
+  const loginUser = async () => {
     if (!email || !password) {
       Alert.alert(
         "ਕੁਝ ਗਲਤ",
@@ -75,6 +76,11 @@ const Login = ({ navigation }: any) => {
       );
     }
   };
+  const { mutate, isLoading } = useMutation(loginUser);
+  const handleLogin = () => {
+    mutate({ email, password });
+  };
+
   return isLoggedIn ? (
     <Bookmark />
   ) : (
@@ -98,7 +104,7 @@ const Login = ({ navigation }: any) => {
           </Text>
 
           <LoginInput setEmail={setEmail} setPassword={setPassword} />
-          <IsLoginBtn handleLogin={handleLogin} />
+          <IsLoginBtn handleLogin={handleLogin} isLoading={isLoading} />
           <PressReg navigation={navigation} />
         </View>
       </TouchableWithoutFeedback>

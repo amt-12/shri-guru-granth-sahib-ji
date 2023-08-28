@@ -1,12 +1,25 @@
-import { StyleSheet, Text, Dimensions, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  Dimensions,
+  TouchableOpacity,
+  ActivityIndicator,
+  View,
+} from "react-native";
 import React from "react";
 
 const { height, width } = Dimensions.get("window");
-const IsLoginBtn = ({ handleLogin }: any) => {
+const IsLoginBtn = ({ handleLogin, isLoading, isError }: any) => {
   return (
-    <TouchableOpacity style={styles.btn} onPress={handleLogin}>
-      <Text style={styles.btntxt}>Sign In</Text>
-    </TouchableOpacity>
+    <View>
+      {isLoading ? (
+        <ActivityIndicator size="large" color="rgb(184, 130, 50)" />
+      ) : (
+        <TouchableOpacity style={styles.btn} onPress={handleLogin}>
+          <Text style={styles.btntxt}>Sign In</Text>
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };
 
