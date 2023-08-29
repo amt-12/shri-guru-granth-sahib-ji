@@ -9,6 +9,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -104,7 +105,9 @@ const Login = ({ navigation }: any) => {
 
           <LoginInput setEmail={setEmail} setPassword={setPassword} />
           <IsLoginBtn handleLogin={handleLogin} isLoading={isLoading} />
-          <Text>Forget password?</Text>
+          <Pressable>
+            <Text style={{ color: "blue" }}>Forget password?</Text>
+          </Pressable>
           <PressReg navigation={navigation} />
         </View>
       </TouchableWithoutFeedback>
