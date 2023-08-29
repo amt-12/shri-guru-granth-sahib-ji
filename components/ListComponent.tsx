@@ -6,6 +6,7 @@ import {
   View,
   Modal,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
 import {
@@ -19,11 +20,8 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import { FontAwesome5 } from "@expo/vector-icons";
-import axios from "axios";
-import SERVER from "../config/connection";
 import { useDeleteBookmark } from "../data/bookmark/mutation";
-import { ActivityIndicator } from "react-native-paper";
-import { queryClient } from "../App";
+import { ActivityIndicator } from "react-native";
 
 const LIST_HEIGHT = 60;
 const TRANSLATE_X_THRESHOLD = 20;
@@ -84,16 +82,20 @@ const ListItem = ({ item, onDelete }: any) => {
       </Animated.View>
       <PanGestureHandler onGestureEvent={panGesture}>
         <Animated.View style={[styles.insidecontainer, rStyle]}>
-          <Text
-            style={{
-              fontSize: 20,
-              color: "rgb(255,255,255)",
-              fontFamily: "GurbaniAkharHeavy",
-              alignItems: "center",
-            }}
-          >
-            {item.title}
-          </Text>
+          <View style={{ flex: 1, flexDirection: "row", marginRight: 5 }}>
+            <TouchableOpacity>
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: "rgb(255,255,255)",
+                  fontFamily: "GurbaniAkharHeavy",
+                  alignItems: "center",
+                }}
+              >
+                {item.title}
+              </Text>
+            </TouchableOpacity>
+          </View>
           <Text
             style={{
               fontSize: 12,
@@ -113,9 +115,8 @@ export default ListComponent;
 
 const styles = StyleSheet.create({
   insidecontainer: {
-    marginHorizontal: 20,
-    width: "96%",
-    padding: 12,
+    width: "100%",
+    padding: 10,
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   iconcontainer: {
-    height: LIST_HEIGHT,
+    height: 50,
     width: 60,
     backgroundColor: "red",
     justifyContent: "center",

@@ -104,6 +104,7 @@ const Login = ({ navigation }: any) => {
 
           <LoginInput setEmail={setEmail} setPassword={setPassword} />
           <IsLoginBtn handleLogin={handleLogin} isLoading={isLoading} />
+          <Text>Forget password?</Text>
           <PressReg navigation={navigation} />
         </View>
       </TouchableWithoutFeedback>

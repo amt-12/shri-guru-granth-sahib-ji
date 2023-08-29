@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,15 +7,11 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import SERVER from "../config/connection";
 import { StatusBar } from "expo-status-bar";
 import ListComponent from "../components/ListComponent";
 import { useBookmarks } from "../data/bookmark/query";
 import { ActivityIndicator } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
-import { useDeleteBookmark } from "../data/bookmark/mutation";
 const { width } = Dimensions.get("window");
 
 const white = "rgb(200,200,200)";
@@ -34,7 +30,7 @@ const Bookmark = () => {
     }, [])
   );
   console.log({
-    data: bookmarks?.data?.data,
+    data: bookmarks?.data,
   });
 
   if (bookmarks.isLoading) {
