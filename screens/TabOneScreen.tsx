@@ -21,8 +21,8 @@ import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { loginFlag } from "../store/auth";
 import { useAtom } from "jotai";
+import { useAddBookmark } from "../data/bookmark/mutation";
 
-const { width, height } = Dimensions.get("window");
 function keyExtractor(page: CreatePage) {
   return `${page.key}`;
 }
@@ -48,10 +48,12 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
   const [visible, setVisible] = useState(false);
   const [angValue, setAngValue] = useState(page);
   const doubleTapRef = useRef(null);
+  const addBookmark = useAddBookmark();
 
-  const onDoubleTapEvent = (event: any) => {
+  const onDoubleTapEvent = (event: any, data) => {
     if (event.nativeEvent.state === State.ACTIVE) {
       console.log("double tap 1");
+      addBookmark.mutateAsync(data);
     }
   };
 
@@ -100,7 +102,13 @@ function Ang({ page, setAngId }: RootTabScreenProps<"TabOne">) {
           <View key={page.line.id}>
             <TapGestureHandler
               ref={doubleTapRef}
-              onHandlerStateChange={onDoubleTapEvent}
+              onHandlerStateChange={(e) => {
+                onDoubleTapEvent(e, {
+                  title: page.line.gurmukhi.unicode,
+                  arth: page.line.translation.punjabi.default.unicode,
+                  ang: page.line.pageno,
+                });
+              }}
               numberOfTaps={2}
             >
               <Pressable>
@@ -159,7 +167,6 @@ export default function TabOneScreen() {
     }, 4000);
     setTimeout(async () => {
       let lastang = await AsyncStorage.getItem("lastAng");
-      console.log({ lastang });
 
       infinitePager.current?.setPage(+lastang, {
         animated: false,

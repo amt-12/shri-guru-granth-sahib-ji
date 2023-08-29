@@ -28,8 +28,6 @@ import {
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import { RouterDrawer } from "./Drawer";
-import Login from "../screens/Login";
-import LoginButton from "../components/LoginBtn";
 
 export default function Navigation({
   colorScheme,

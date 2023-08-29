@@ -24,7 +24,7 @@ export const makeUrl = (
     .join("/")}${query ? `?${queryString.stringify(query)}` : ""}`;
 
 export const getDefaultHeaders = async () => ({
-  Authorization: `Bearer ${await AsyncStorage.getItem("accessToken")}`,
+  Authorization: `Bearer ${await AsyncStorage.getItem("authToken")}`,
   "Content-Type": "application/json",
 });
 
@@ -70,6 +70,8 @@ const callAxios = async ({
   body,
   apiHostUrl,
 }: any) => {
+  console.log(makeUrl({ ...uriEndPoint, pathParams, query }, apiHostUrl));
+
   return Axios({
     method: uriEndPoint.method,
     url: makeUrl({ ...uriEndPoint, pathParams, query }, apiHostUrl),

@@ -21,26 +21,29 @@ import Animated, {
 import { FontAwesome5 } from "@expo/vector-icons";
 import axios from "axios";
 import SERVER from "../config/connection";
+import { useDeleteBookmark } from "../data/bookmark/mutation";
+import { ActivityIndicator } from "react-native-paper";
+import { queryClient } from "../App";
 
 const LIST_HEIGHT = 60;
 const TRANSLATE_X_THRESHOLD = 20;
 const ListComponent = ({ data }: any) => {
-  const handleDelete = async () => {
-    try {
-      const res = await axios.delete(`${SERVER}/bookmark/${id}`);
-    } catch (err) {
-      if (err.response) {
-        console.log("Server Error:", err.response.status, err.response.data);
-      } else {
-        console.log("Network Error:", err.message);
-      }
-    }
-  };
+  const deleteBookmark = useDeleteBookmark();
+
+  const handleDelete = async (id) => deleteBookmark.mutateAsync(id);
+  if (deleteBookmark.isLoading)
+    return <ActivityIndicator animating size={"large"} />;
+
   return (
     <FlatList
       data={data}
       renderItem={({ item }) => (
-        <ListItem item={item} onDelete={handleDelete} />
+        <ListItem
+          item={item}
+          onDelete={() => {
+            handleDelete(item._id);
+          }}
+        />
       )}
     />
   );

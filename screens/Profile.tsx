@@ -1,39 +1,46 @@
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SERVER from "../config/connection";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Profile = () => {
-  const [data, setData] = useState([]);
+interface ProfileProps {
+  userId: string; // Modify the type based on your use case
+}
 
-  const fetchData = async () => {
+const Profile: React.FC<ProfileProps> = ({ userId }) => {
+  const [users, setUsers] = useState<any[]>([]);
+
+  const fetchData = async (userId: any) => {
     try {
       const authToken = await AsyncStorage.getItem("authToken");
       if (authToken) {
-        const response = await axios
-          .get(`${SERVER}singleuser/${data._id}`, {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          })
-          .then((res) => {
-            setData(res?.data?.data);
-          });
+        const res = await axios.get(`${SERVER}singleuser/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+        setUsers(res?.data?.data);
       } else {
-        // Handle case where authToken is not available
         console.log("Auth token not available");
       }
     } catch (error) {
       console.error(error);
     }
   };
+
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(userId);
+  }, [userId]); // Fetch data when userId changes
+
   return (
     <View>
       <Text>Profile</Text>
+      <FlatList
+        data={users}
+        keyExtractor={(user: any) => user._id}
+        renderItem={({ item }: any) => <Text>{item.fullname}</Text>}
+      />
     </View>
   );
 };

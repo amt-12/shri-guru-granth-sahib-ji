@@ -1,12 +1,11 @@
 import AsyncStorageLib from "@react-native-async-storage/async-storage";
 import { callApi } from "../../apiUtils";
+import SERVER from "../../config/connection";
 
 // call api to fetch ang
 export const getAng = ({ angId }) => {
   return AsyncStorageLib.getItem("ang:" + angId).then((ang) => {
     if (ang) {
-      console.log("using Cache for ang: " + angId);
-
       return JSON.parse(ang);
     }
 

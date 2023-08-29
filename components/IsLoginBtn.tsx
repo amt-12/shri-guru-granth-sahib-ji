@@ -13,7 +13,7 @@ const IsLoginBtn = ({ handleLogin, isLoading, isError }: any) => {
   return (
     <View>
       {isLoading ? (
-        <ActivityIndicator size="large" color="rgb(184, 130, 50)" />
+        <ActivityIndicator size="large" color="#E1372D" />
       ) : (
         <TouchableOpacity style={styles.btn} onPress={handleLogin}>
           <Text style={styles.btntxt}>Sign In</Text>

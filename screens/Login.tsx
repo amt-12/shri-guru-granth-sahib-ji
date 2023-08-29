@@ -59,7 +59,6 @@ const Login = ({ navigation }: any) => {
       if (res.data.token) {
         const authToken = res.data.token;
         await AsyncStorage.setItem("authToken", authToken);
-        console.log("Token", authToken);
         setIsLoggedIn(true);
         Alert.alert("Success", "Login Successfully");
         navigation.navigate("BookmarkScreen");

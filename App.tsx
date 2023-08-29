@@ -14,8 +14,7 @@ import {
 } from "react-query";
 import { Provider as PaperProvider } from "react-native-paper";
 
-const queryClient = new QueryClient();
-
+export const queryClient = new QueryClient();
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
