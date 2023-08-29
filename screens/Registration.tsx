@@ -18,6 +18,7 @@ import { useMutation } from "react-query";
 
 const Registration = ({ navigation }: any) => {
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [address, setAddress] = useState("");
@@ -31,6 +32,7 @@ const Registration = ({ navigation }: any) => {
       const res = await axios.post(SERVER + "/registration", {
         fullName: fullName,
         address: address,
+        phone: phone,
         email: email,
         password: password,
       });
@@ -42,7 +44,7 @@ const Registration = ({ navigation }: any) => {
   };
   const { mutate, isLoading, isError, error } = useMutation(registrationUser);
   const handleregistration = () => {
-    mutate({ fullName, address, email, password });
+    mutate({ fullName, address, phone, email, password });
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -62,6 +64,7 @@ const Registration = ({ navigation }: any) => {
         <RegInput
           setFullName={setFullName}
           setAddress={setAddress}
+          setPhone={setPhone}
           setEmail={setEmail}
           setPassword={setPassword}
         />

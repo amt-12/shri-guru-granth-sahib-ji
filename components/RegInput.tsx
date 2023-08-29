@@ -1,6 +1,12 @@
 import { TextInput, StyleSheet, Dimensions } from "react-native";
 const { height, width } = Dimensions.get("window");
-const RegInput = ({ setFullName, setAddress, setEmail, setPassword }: any) => {
+const RegInput = ({
+  setFullName,
+  setAddress,
+  setPhone,
+  setEmail,
+  setPassword,
+}: any) => {
   return (
     <>
       <TextInput
@@ -12,6 +18,11 @@ const RegInput = ({ setFullName, setAddress, setEmail, setPassword }: any) => {
         style={styles.txt}
         placeholder="ਪੂਰਾ ਪਤਾ"
         onChangeText={setAddress}
+      />
+      <TextInput
+        style={styles.txt}
+        placeholder="Mobile Number"
+        onChangeText={setPhone}
       />
 
       <TextInput
