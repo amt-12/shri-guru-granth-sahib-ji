@@ -15,13 +15,7 @@ import { useFocusEffect } from "@react-navigation/native";
 const { width } = Dimensions.get("window");
 
 const white = "rgb(200,200,200)";
-interface ListTask {
-  title: String;
-  arth: String;
-  ang: Number;
-}
 const Bookmark = () => {
-  const [data, setData] = useState<ListTask>();
   // useBookmarks
   const bookmarks = useBookmarks();
   useFocusEffect(

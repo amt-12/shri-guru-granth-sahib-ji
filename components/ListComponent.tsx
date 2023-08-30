@@ -116,16 +116,18 @@ export default ListComponent;
 const styles = StyleSheet.create({
   insidecontainer: {
     width: "100%",
-    padding: 10,
+    height: 60,
+    paddingHorizontal: 12,
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "#232323",
+    backgroundColor: "#565656",
     alignItems: "center",
   },
   iconcontainer: {
-    height: 50,
+    height: 60,
     width: 60,
+    padding: 5,
     backgroundColor: "red",
     justifyContent: "center",
     position: "absolute",
